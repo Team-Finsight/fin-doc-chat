@@ -16,12 +16,7 @@ from dotenv import load_dotenv
 import tempfile
 import logging
 import sys
-import llama_index
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
-from llama_index import VectorStoreIndex, SimpleDirectoryReader, ServiceContext
-from llama_index.llms import HuggingFaceLLM
 
 
 load_dotenv()
