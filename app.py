@@ -68,13 +68,13 @@ def create_conversational_chain(vector_store):
                         #model_type="llama", config={'max_new_tokens': 500, 'temperature': 0.01})
     llm = Replicate(
         streaming = True,
-        model = "replicate/llama-2-70b-chat:58d078176e02c219e11eb4da5a02a7830a283b14cf8f94537af893ccff5ee781", 
+        model = "replicate/llama-2-13b-chat:58d078176e02c219e11eb4da5a02a7830a283b14cf8f94537af893ccff5ee781", 
         callbacks=[StreamingStdOutCallbackHandler()],
         input = {"temperature": 0.01, "max_length" :2048,"top_p":1})
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
     chain = ConversationalRetrievalChain.from_llm(llm=llm, chain_type='stuff',
-                                                 retriever=vector_store.as_retriever(search_kwargs={"k": 2}),
+                                                 retriever=vector_store.as_retriever(search_kwargs={"k": 5}),
                                                  memory=memory)
     return chain
 
