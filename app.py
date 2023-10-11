@@ -66,25 +66,25 @@ def create_conversational_chain(vector_store):
                         #streaming=True, 
                         #callbacks=[StreamingStdOutCallbackHandler()],
                         #model_type="llama", config={'max_new_tokens': 500, 'temperature': 0.01})
-import torch
-
-llm = HuggingFaceLLM(
-    context_window=4096,
-    max_new_tokens=2048,
-    generate_kwargs={"temperature": 0.0, "do_sample": False},
-    system_prompt=system_prompt,
-    query_wrapper_prompt=query_wrapper_prompt,
-    tokenizer_name="meta-llama/Llama-2-13b-chat-hf",
-    model_name="meta-llama/Llama-2-13b-chat-hf",
-    device_map="auto",
-    # uncomment this if using CUDA to reduce memory usage
-    model_kwargs={"torch_dtype": torch.float16 , "load_in_8bit":True}
-)
-    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-
-    chain = ConversationalRetrievalChain.from_llm(llm=llm, chain_type='stuff',
-                                                 retriever=vector_store.as_retriever(search_kwargs={"k": 5}),
-                                                 memory=memory)
+    import torch
+    
+    llm = HuggingFaceLLM(
+        context_window=4096,
+        max_new_tokens=2048,
+        generate_kwargs={"temperature": 0.0, "do_sample": False},
+        system_prompt=system_prompt,
+        query_wrapper_prompt=query_wrapper_prompt,
+        tokenizer_name="meta-llama/Llama-2-13b-chat-hf",
+        model_name="meta-llama/Llama-2-13b-chat-hf",
+        device_map="auto",
+        # uncomment this if using CUDA to reduce memory usage
+        model_kwargs={"torch_dtype": torch.float16 , "load_in_8bit":True}
+    )
+        memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    
+        chain = ConversationalRetrievalChain.from_llm(llm=llm, chain_type='stuff',
+                                                     retriever=vector_store.as_retriever(search_kwargs={"k": 5}),
+                                                     memory=memory)
     return chain
 
 def main():
