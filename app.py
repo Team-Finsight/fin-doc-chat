@@ -74,8 +74,8 @@ def create_conversational_chain(vector_store):
         generate_kwargs={"temperature": 0.0, "do_sample": False},
         system_prompt=system_prompt,
         query_wrapper_prompt=query_wrapper_prompt,
-        tokenizer_name="meta-llama/Llama-2-13b-chat-hf",
-        model_name="meta-llama/Llama-2-13b-chat-hf",
+        tokenizer_name="TheBloke/Llama-2-13B-chat-GPTQ",
+        model_name="TheBloke/Llama-2-13B-chat-GPTQ",
         device_map="auto",
         # uncomment this if using CUDA to reduce memory usage
         model_kwargs={"torch_dtype": torch.float16 , "load_in_8bit":True}
