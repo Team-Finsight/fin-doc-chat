@@ -72,45 +72,24 @@ def create_conversational_chain(vector_store):
                         #model_type="llama", config={'max_new_tokens': 500, 'temperature': 0.01})
     import torch
     
-    from huggingface_hub import InferenceClient
+    llm = HuggingFaceLLM(
+    context_window=4096,
+    max_new_tokens=2048,
+    generate_kwargs={"temperature": 0.0, "do_sample": False},
+    system_prompt=system_prompt,
+    query_wrapper_prompt=query_wrapper_prompt,
+    tokenizer_name="TheBloke/Llama-2-13B-chat-GPTQ",
+    model_name="TheBloke/Llama-2-13B-chat-GPTQ",
+    device_map="auto",
+    # uncomment this if using CUDA to reduce memory usage
+    model_kwargs={"torch_dtype": torch.float16 , "load_in_8bit":True}
+)
 
-        # HF Inference Endpoints parameter
-        endpoint_url =HF_API_LLAMA2_BASE
-        hf_token = HF_API_KEY
-        # Streaming Client
-        client = InferenceClient(endpoint_url, token=hf_token)
-        
-        # generation parameter
-        gen_kwargs = dict(
-            max_new_tokens=512,
-            top_k=30,
-            top_p=0.9,
-            temperature=0.2,
-            repetition_penalty=1.02,
-            stop_sequences=["\nUser:", "<|endoftext|>", "</s>"],
-        )
-        # prompt
-        prompt = query
-        
-        stream = client.text_generation(prompt, stream=True, details=True, **gen_kwargs)
-        
-        # yield each generated token
-        for r in stream:
-            # skip special tokens
-            if r.token.special:
-                continue
-            # stop if we encounter a stop sequence
-            if r.token.text in gen_kwargs["stop_sequences"]:
-                break
-            # yield the generated token
-            print(r.token.text, end = "")
-            # yield r.token.text
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
-        memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-    
-        chain = ConversationalRetrievalChain.from_llm(llm=llm, chain_type='stuff',
-                                                     retriever=vector_store.as_retriever(search_kwargs={"k": 5}),
-                                                     memory=memory)
+    chain = ConversationalRetrievalChain.from_llm(llm=llm, chain_type='stuff',
+                                                 retriever=vector_store.as_retriever(search_kwargs={"k": 5}),
+                                                 memory=memory)
     return chain
 
 def main():
