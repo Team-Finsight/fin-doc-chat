@@ -17,7 +17,7 @@ import tempfile
 import logging
 import sys
 
-load_dotenv()
+
 
 
 def initialize_session_state():
@@ -58,7 +58,6 @@ def display_chat_history(chain):
                 message(st.session_state["generated"][i], key=str(i), avatar_style="fun-emoji")
 
 def create_conversational_chain(vector_store):
-    load_dotenv()
     # Create llm
     #llm = CTransformers(model="llama-2-7b-chat.ggmlv3.q4_0.bin",
                         #streaming=True, 
@@ -87,7 +86,6 @@ def create_conversational_chain(vector_store):
     return chain
 
 def main():
-    load_dotenv()
     # Initialize session state
     initialize_session_state()
     st.title("FIN-DOC-AI :🏬📉:")
