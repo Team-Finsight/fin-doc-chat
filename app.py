@@ -17,14 +17,8 @@ import tempfile
 import logging
 import sys
 
-HF_API_KEY="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"
-HF_API_LLAMA2_BASE="https://m70o4f31cnuvjf9s.us-east-1.aws.endpoints.huggingface.cloud"
-
 load_dotenv()
-from dotenv import load_dotenv, find_dotenv
-import os
-_ = load_dotenv(find_dotenv())
-from text_generation import Client
+
 
 def initialize_session_state():
     if 'history' not in st.session_state:
@@ -140,4 +134,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
