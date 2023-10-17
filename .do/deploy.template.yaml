@@ -4,5 +4,5 @@ spec:
   - dockerfile_path: Dockerfile
     git:
       branch: main
-      repo_clone_url: https://github.com/dmancevo/digitalocean_docker_streamlit.git
+      repo_clone_url: https://github.com/Team-Finsight/fin-doc-chat.git
     name: fin-doc-chat
