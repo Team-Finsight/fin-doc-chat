@@ -16,6 +16,22 @@ from dotenv import load_dotenv
 import tempfile
 import logging
 import sys
+from langchain.llms import HuggingFaceHub
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+
+
+from llama_index.prompts.prompts import SimpleInputPrompt
+
+
+system_prompt = "You are a Q&A assistant for income tax. Your goal is to answer questions only related to the document as accurately as possible based on the instructions and context provided."
+
+
+
+# This will wrap the default prompts that are internal to llama-index
+query_wrapper_prompt = SimpleInputPrompt("<|USER|>{query_str}<|ASSISTANT|>")    
+from huggingface_hub import login
+login(token="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")
 
 
 
@@ -62,21 +78,21 @@ def create_conversational_chain(vector_store):
                         #streaming=True, 
                         #callbacks=[StreamingStdOutCallbackHandler()],
                         #model_type="llama", config={'max_new_tokens': 500, 'temperature': 0.01})
-    import torch
     
+    import torch
+    from llama_index.llms import HuggingFaceLLM
     llm = HuggingFaceLLM(
-    context_window=4096,
-    max_new_tokens=2048,
-    generate_kwargs={"temperature": 0.0, "do_sample": False},
-    system_prompt=system_prompt,
-    query_wrapper_prompt=query_wrapper_prompt,
-    tokenizer_name="TheBloke/Llama-2-13B-chat-GPTQ",
-    model_name="TheBloke/Llama-2-13B-chat-GPTQ",
-    device_map="auto",
-    # uncomment this if using CUDA to reduce memory usage
-    model_kwargs={"torch_dtype": torch.float16 , "load_in_8bit":True}
-)
-
+        context_window=4096,
+        max_new_tokens=2048,
+        generate_kwargs={"temperature": 0.0, "do_sample": False},
+        system_prompt=system_prompt,
+        query_wrapper_prompt=query_wrapper_prompt,
+        tokenizer_name="meta-llama/Llama-2-13b-chat-hf",
+        model_name="meta-llama/Llama-2-13b-chat-hf",
+        device_map="auto",
+        # uncomment this if using CUDA to reduce memory usage
+        model_kwargs={"torch_dtype": torch.float16 , "load_in_8bit":True}
+    )
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
     chain = ConversationalRetrievalChain.from_llm(llm=llm, chain_type='stuff',
