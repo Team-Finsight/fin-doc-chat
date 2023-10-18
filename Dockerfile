@@ -11,7 +11,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt --default-timeout=300 future
 
 # Copy the rest of the application files to the container's working directory
-COPY . .
+COPY nltk.txt .
 
 # Expose the port that Streamlit will run on
 EXPOSE 8501
