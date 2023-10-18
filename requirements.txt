@@ -13,4 +13,7 @@ python-dotenv
 replicate
 docx2txt
 nltk==3.5
+bitsandbytes
+optimum
+auto-gptq
 llama_index
