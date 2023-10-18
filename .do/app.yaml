@@ -1,8 +1,0 @@
-name: fin-doc-chat
-services:
-- dockerfile_path: Dockerfile
-  github:
-    branch: main
-    deploy_on_push: true
-    repo: Team-Finsight/fin-doc-chat
-  name: fin-doc-chat
