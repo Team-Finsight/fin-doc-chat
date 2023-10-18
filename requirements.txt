@@ -17,3 +17,5 @@ bitsandbytes
 optimum
 auto-gptq
 llama_index
+duckduckgo-search
+numexpr
